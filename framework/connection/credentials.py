@@ -1,0 +1,1 @@
+"""This file contains placeholder for storing authentication credentials.Date Created: 4-Sept-2020Author: Nikunj Soni (nks141197@gmail.com)"""CREDENTIALS = {  "api_key" : "",  "api_secret": "",  "user_id" : "",  "password" : "",  "pin" : ""  }
