@@ -19,7 +19,7 @@ def generate_session():
   """Generates a kite trading session.
   
   Returns:
-    (str): access_token.
+    (obj): KiteConnect object.
   """
   # Get request_token.
   request_token = _get_request_token()
@@ -33,7 +33,8 @@ def generate_session():
   
   # The access_token is vaild till 6am the next day.
   INFO(f"Access token:{data['access_token']}")
-  return data["access_token"]
+  kite.set_access_token(data["access_token"])
+  return kite
    
 def _get_request_token():
   """
@@ -45,7 +46,7 @@ def _get_request_token():
   """
   kite = KiteConnect(api_key=CREDENTIALS['api_key'])
   # Start browser object.
-  DEBUG("Starting browser")
+  INFO("Starting browser")
   chromedriver_path = os.environ["AUTOKITE_PATH"]+"/driver/chromedriver"
   service = webdriver.chrome.service.Service(chromedriver_path)
   service.start()
