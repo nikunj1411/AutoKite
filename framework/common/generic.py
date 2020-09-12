@@ -14,7 +14,7 @@ from framework.logging.logger import ERROR, INFO
 
 @retry(tries=3, delay=10)
 def get_instrument_tokens(kite, instruments, exchange="NSE"):
-  """Get instrument tokens for given instrument symbols of NSE.
+  """Get instrument tokens for given instrument symbols of exchange.
 
   Args:
     kite(obj): KiteConnect object.
