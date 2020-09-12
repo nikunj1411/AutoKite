@@ -11,8 +11,7 @@ from retry import retry
 from framework.connection.connect import generate_session
 from framework.logging.logger import ERROR, INFO
 
-
-@retry(tries=3, delay=10)
+@retry(tries=3, delay=5)
 def get_instrument_tokens(kite, instruments, exchange="NSE"):
   """Get instrument tokens for given instrument symbols of exchange.
 
@@ -52,3 +51,51 @@ def get_trading_session():
 
   """
   return generate_session()
+
+@retry(tries=3, delay=5)
+def get_ltp(kite, instrument):
+  """Get last traded price for an instrument.
+
+  Args:
+    kite(obj): KiteConnect object.
+    instrument(str): Instrument in format "Exchange:Symbol"("NSE:INFY").
+
+  Returns:
+    (float): Last traded price.
+
+  """
+  resp = kite.ltp(instrument)
+  if resp['status'] == "success":
+    INFO(f"LTP for {instrument}:{resp['data'][instrument]['last_price']}")
+  else:
+    # Log error details and retry.
+    ERROR("Error occurred while getting ltp-")
+    ERROR(f"Status:{resp['status']}, Error:{resp['error_type']}, "
+          f"Error Message:{resp['message']}")
+    raise
+  return resp['data'][instrument]['last_price']
+
+@retry(tries=3, delay=5)
+def get_quote(kite, instrument):
+  """Get quote for an instrument.
+  Warning: It may return a bulk object consuming lot of memory, hence avoid
+  it's usage unless required.
+
+  Args:
+    kite(obj): KiteConnect object.
+    instrument(str): Instrument in format "Exchange:Symbol"("NSE:INFY").
+
+  Returns:
+    (dict): the quote.
+
+  """
+  resp = kite.quote(instrument)
+  if resp['status'] == "success":
+    INFO(f"Quote for {instrument}: {resp['data']}")
+  else:
+    # Log error details and retry.
+    ERROR("Error occurred while getting quote-")
+    ERROR(f"Status:{resp['status']}, Error:{resp['error_type']}, "
+          f"Error Message:{resp['message']}")
+    raise
+  return resp['data']

@@ -14,7 +14,6 @@ from framework.connection.credentials import CREDENTIALS
 from framework.connection.html_attributes import CSS
 from framework.logging.logger import DEBUG,INFO
 
-
 def generate_session():
   """Generates a kite trading session.
   
