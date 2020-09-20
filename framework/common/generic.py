@@ -34,7 +34,7 @@ def get_instrument_tokens(kite, instruments, exchange="NSE"):
   for symbol in instruments:
     try:
       token = instruments_df[instruments_df.tradingsymbol==symbol].instrument_token.values[0]
-      instrument_tokens[symbol] = token
+      instrument_tokens[symbol] = int(token)
     except:
       ERROR(f"Error occurred during lookup token for symbol:{symbol}")
       raise
